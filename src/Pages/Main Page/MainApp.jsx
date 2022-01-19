@@ -81,6 +81,7 @@ const MainApp = ({ user, users }) => {
                         convo.participantId === user.id ||
                         convo.userId === user.id
                     );
+                    setSelectedConvo(singleConvo)
 
                     fetch(
                       `http://localhost:4000/messages?conversationId=${singleConvo.id}`
@@ -123,7 +124,7 @@ const MainApp = ({ user, users }) => {
 
         <ul className="conversation__messages">
           {selectedConvoMessages.map((message) => {
-            if ((message.userId === user.id)) {
+            if (message.userId === user.id) {
               return (
                 <li className="outgoing">
                   <p>{message.messageText}</p>
@@ -147,10 +148,38 @@ const MainApp = ({ user, users }) => {
 
         {/* <!-- Message Box --> */}
         <footer>
-          <form className="panel conversation__message-box">
+          <form
+            onSubmit={(e) => {
+                e.preventDefault()
+              fetch(`http://localhost:4000/messages`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  conversationId: selectedConvo.id,
+                  userId: user.id,
+                  messageText: e.target.msg.value,
+                }),
+              })
+                .then((resp) => resp.json())
+                .then((msg) =>
+                  setSelectedConvoMessages([
+                    ...selectedConvoMessages,
+                    {
+                      conversationId: selectedConvo.id,
+                      userId: user.id,
+                      messageText: e.target.msg.value,
+                    },
+                  ])
+                );
+            }}
+            className="panel conversation__message-box"
+          >
             <input
               type="text"
               placeholder="Type a message"
+              name="msg"
               // value=""
             />
             <button type="submit">

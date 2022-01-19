@@ -36,54 +36,98 @@
       "id": 5
     }
   ],
-  "messages": [{
-    "userId": 4,
-    "messageText": "Hello! 👋 ",
-    "conversationId": 6,
-    "id": 1
-  },{
-    "userId": 4,
-    "messageText": "Hello! 👋 ",
-    "conversationId": 6,
-    "id": 2
-  },{
-    "userId":5 ,
-    "messageText": "Hello! 👋 ",
-    "conversationId": 6,
-    "id": 3
-  },{
-    "userId": 5 ,
-    "messageText": "Hello! 👋 ",
-    "conversationId": 6,
-    "id": 4
-  }],
-  "conversations": [{
-    "userId": 3,
-    "participantId": 1,
-    "id": 1
-  },{
-    "userId": 2,
-    "participantId": 3,
-    "id": 2
-  },{
-    "userId": 4,
-    "participantId": 2,
-    "id": 3
-  },{
-    "userId": 4,
-    "participantId": 3,
-    "id": 4
-  },{
-    "userId": 4,
-    "participantId": 1,
-    "id": 5
-  },{
-    "userId": 4,
-    "participantId": 5,
-    "id": 6
-  }]
+  "messages": [
+    {
+      "userId": 4,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 6,
+      "id": 1
+    },
+    {
+      "userId": 4,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 6,
+      "id": 2
+    },
+    {
+      "userId": 5,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 6,
+      "id": 3
+    },
+    {
+      "userId": 5,
+      "messageText": "Hello! 👋 ",
+      "conversationId": 6,
+      "id": 4
+    },
+    {
+      "conversationId": 6,
+      "userId": 4,
+      "messageText": "asd",
+      "id": 5
+    },
+    {
+      "conversationId": 6,
+      "userId": 4,
+      "messageText": "dasd",
+      "id": 6
+    },
+    {
+      "conversationId": 6,
+      "userId": 4,
+      "messageText": "dasdasd",
+      "id": 7
+    },
+    {
+      "conversationId": 6,
+      "userId": 5,
+      "messageText": "sdfsd",
+      "id": 8
+    },
+    {
+      "conversationId": 6,
+      "userId": 5,
+      "messageText": "sdfsdfs",
+      "id": 9
+    },
+    {
+      "conversationId": 6,
+      "userId": 4,
+      "messageText": "gfdg",
+      "id": 10
+    }
+  ],
+  "conversations": [
+    {
+      "userId": 3,
+      "participantId": 1,
+      "id": 1
+    },
+    {
+      "userId": 2,
+      "participantId": 3,
+      "id": 2
+    },
+    {
+      "userId": 4,
+      "participantId": 2,
+      "id": 3
+    },
+    {
+      "userId": 4,
+      "participantId": 3,
+      "id": 4
+    },
+    {
+      "userId": 4,
+      "participantId": 1,
+      "id": 5
+    },
+    {
+      "userId": 4,
+      "participantId": 5,
+      "id": 6
+    }
+  ]
 }
-
-
-
-
