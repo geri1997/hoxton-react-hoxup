@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "./Components/Header";
 
-const MainApp = ({ user, users }) => {
+const MainApp = ({ user, users, setSelectedUser }) => {
   const [convos, setConvos] = useState([]);
   const [otherConvs, setOtherConvs] = useState([]);
   const [convoUsers, setConvoUsers] = useState([]);
   const [allConvos, setAllConvos] = useState([]);
   const [selectedConvo, setSelectedConvo] = useState(null);
   const [selectedConvoMessages, setSelectedConvoMessages] = useState([]);
+  const [showSettingsModal, setShowSettingsModal] = useState(false);
 
+
+  const params = useParams();
+
+  const navigate = useNavigate();
+  
   //fetch conversations
   useEffect(() => {
     fetch(`http://localhost:4000/conversations?userId=${user.id}`)
@@ -45,13 +52,14 @@ const MainApp = ({ user, users }) => {
 
     setConvoUsers(userArr);
   }, [convos, otherConvs]);
-
+ 
+  
   return (
     <div className="main-wrapper">
       {/* <!-- Side Panel --> */}
       <aside>
         {/* <!-- Side Header --> */}
-        <Header user={user} />
+        <Header setSelectedUser={setSelectedUser} showSettingsModal={showSettingsModal} setShowSettingsModal = {setShowSettingsModal} user={user} />
 
         {/* <!-- Search form --> */}
         <form className="aside__search-container">
@@ -71,44 +79,51 @@ const MainApp = ({ user, users }) => {
               </div>
             </button>
           </li>
-          {convoUsers.map((user, i) => {
-            return (
-              <li key={user.id}>
-                <button
-                  onClick={(e) => {
-                    let singleConvo = allConvos.find(
-                      (convo) =>
-                        convo.participantId === user.id ||
-                        convo.userId === user.id
-                    );
-                    setSelectedConvo(singleConvo)
-
-                    fetch(
-                      `http://localhost:4000/messages?conversationId=${singleConvo.id}`
-                    )
-                      .then((resp) => resp.json())
-                      .then((messages) => {
-                        console.log(messages);
-                        setSelectedConvoMessages(messages);
-                      });
-                  }}
-                  className="chat-button"
-                >
-                  <img
-                    className="avatar"
-                    height="50"
-                    width="50"
-                    alt=""
-                    src={user.avatar}
-                  />
-                  <div>
-                    <h3>{user.firstName}</h3>
-                    <p>Last message</p>
-                  </div>
-                </button>
-              </li>
-            );
-          })}
+          {convoUsers.map(
+            (
+              user,
+              // @ts-ignore
+              i
+            ) => {
+              return (
+                <li key={user.id}>
+                  <button
+                    // @ts-ignore
+                    onClick={(e) => {
+                      let singleConvo = allConvos.find(
+                        (convo) =>
+                          convo.participantId === user.id ||
+                          convo.userId === user.id
+                      );
+                      setSelectedConvo(singleConvo);
+                      navigate(`/logged-in/${singleConvo.id}`);
+                      fetch(
+                        `http://localhost:4000/messages?conversationId=${singleConvo.id}`
+                      )
+                        .then((resp) => resp.json())
+                        .then((messages) => {
+                          console.log(messages);
+                          setSelectedConvoMessages(messages);
+                        });
+                    }}
+                    className="chat-button"
+                  >
+                    <img
+                      className="avatar"
+                      height="50"
+                      width="50"
+                      alt=""
+                      src={user.avatar}
+                    />
+                    <div>
+                      <h3>{user.firstName}</h3>
+                      <p>Last message</p>
+                    </div>
+                  </button>
+                </li>
+              );
+            }
+          )}
         </ul>
       </aside>
 
@@ -122,27 +137,29 @@ const MainApp = ({ user, users }) => {
       The Messages List will go here. Check main-messages-list.html
      --> */}
 
-        <ul className="conversation__messages">
-          {selectedConvoMessages.map((message) => {
-            if (message.userId === user.id) {
-              return (
-                <li className="outgoing">
-                  <p>{message.messageText}</p>
-                </li>
-              );
-            } else {
-              return (
-                <li>
-                  <p>{message.messageText}</p>
-                </li>
-              );
-            }
-          })}
+        {selectedConvo && (
+          <ul id="msg-ul" className="conversation__messages">
+            {selectedConvoMessages.map((message) => {
+              if (message.userId === user.id) {
+                return (
+                  <li key={message.id} className="outgoing">
+                    <p>{message.messageText}</p>
+                  </li>
+                );
+              } else {
+                return (
+                  <li key={message.id}>
+                    <p>{message.messageText}</p>
+                  </li>
+                );
+              }
+            })}
 
-          {/* <!-- Outgoing messages are messages sent by the current logged in user --> */}
+            {/* <!-- Outgoing messages are messages sent by the current logged in user --> */}
 
-          {/* <!-- This one doesnt belong to the current logged in user --> */}
-        </ul>
+            {/* <!-- This one doesnt belong to the current logged in user --> */}
+          </ul>
+        )}
 
         <ul className="conversation__messages"></ul>
 
@@ -150,7 +167,7 @@ const MainApp = ({ user, users }) => {
         <footer>
           <form
             onSubmit={(e) => {
-                e.preventDefault()
+              e.preventDefault();
               fetch(`http://localhost:4000/messages`, {
                 method: "POST",
                 headers: {
@@ -159,20 +176,25 @@ const MainApp = ({ user, users }) => {
                 body: JSON.stringify({
                   conversationId: selectedConvo.id,
                   userId: user.id,
+                  // @ts-ignore
                   messageText: e.target.msg.value,
                 }),
               })
                 .then((resp) => resp.json())
-                .then((msg) =>
+                // @ts-ignore
+                .then((msg) => {
                   setSelectedConvoMessages([
                     ...selectedConvoMessages,
                     {
                       conversationId: selectedConvo.id,
                       userId: user.id,
+                      // @ts-ignore
                       messageText: e.target.msg.value,
                     },
-                  ])
-                );
+                  ]);
+                  // @ts-ignore
+                  e.target.reset();
+                });
             }}
             className="panel conversation__message-box"
           >

@@ -21,8 +21,8 @@ export default function App() {
         path={"/login"}
         element={<Login setUsers={setUsers} setSelectedUser={setSelectedUser} users={users} />}
       />
-      <Route path={"/logged-in"} element={<MainApp user={selectedUser} users={users}/>} />
-      {/* <Route path={"/logged-in/:id"} element={<h1>test</h1>} /> */}
+      <Route path={"/logged-in"} element={<MainApp setSelectedUser={setSelectedUser} user={selectedUser} users={users}/>} />
+      <Route path={"/logged-in/:id"} element={<MainApp setSelectedUser={setSelectedUser} user={selectedUser} users={users}/>} />
     </Routes>
   );
 }

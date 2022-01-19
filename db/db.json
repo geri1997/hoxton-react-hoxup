@@ -96,6 +96,78 @@
       "userId": 4,
       "messageText": "gfdg",
       "id": 10
+    },
+    {
+      "conversationId": 6,
+      "userId": 4,
+      "messageText": "sdfsdf",
+      "id": 11
+    },
+    {
+      "conversationId": 6,
+      "userId": 4,
+      "messageText": "asdweqw",
+      "id": 12
+    },
+    {
+      "conversationId": 6,
+      "userId": 4,
+      "messageText": "asdasd",
+      "id": 13
+    },
+    {
+      "conversationId": 6,
+      "userId": 4,
+      "messageText": "tert",
+      "id": 14
+    },
+    {
+      "conversationId": 6,
+      "userId": 5,
+      "messageText": "gfdgd",
+      "id": 15
+    },
+    {
+      "conversationId": 3,
+      "userId": 2,
+      "messageText": "test ",
+      "id": 16
+    },
+    {
+      "conversationId": 2,
+      "userId": 2,
+      "messageText": "test2",
+      "id": 17
+    },
+    {
+      "conversationId": 1,
+      "userId": 3,
+      "messageText": "sdfsdf",
+      "id": 18
+    },
+    {
+      "conversationId": 5,
+      "userId": 4,
+      "messageText": "nico-ed test",
+      "id": 19
+    },
+    {
+      "conversationId": 4,
+      "userId": 4,
+      "messageText": "nico-luca test",
+      "id": 20
+    },
+    {
+      "conversationId": 4,
+      "userId": 4,
+      "messageText": "asdasd",
+      "id": 21
+    },
+    {
+      "conversationId": 5,
+      "userId": 4,
+      "messageText": "dfg",
+      "id": 22
     }
   ],
   "conversations": [
