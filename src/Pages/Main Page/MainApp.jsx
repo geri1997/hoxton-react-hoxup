@@ -10,6 +10,8 @@ const MainApp = ({ user, users, setSelectedUser }) => {
   const [selectedConvo, setSelectedConvo] = useState(null);
   const [selectedConvoMessages, setSelectedConvoMessages] = useState([]);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [newConvoModal, setNewConvoModal] = useState(false);
+  const [usersWithoutConvo, setUsersWithoutConvo] = useState([]);
 
   const params = useParams();
 
@@ -49,11 +51,71 @@ const MainApp = ({ user, users, setSelectedUser }) => {
       }
     }
 
-    setConvoUsers(userArr);
+    setConvoUsers((prevUsers) => {
+      setUsersWithoutConvo(
+        users.filter((us) => {
+            if(us.id===user.id)return false
+          if (
+            userArr.find((conUs) => {
+              return conUs.id === us.id;
+            }) === undefined
+          )
+            return true;
+
+          return false;
+        })
+      );
+
+      return userArr;
+    });
   }, [convos, otherConvs]);
 
   return (
     <div className="main-wrapper">
+      {newConvoModal && (
+        <section
+          onClick={(e) => {
+            // @ts-ignore
+            if (e.target.classList.contains("modal-wrapper")) {
+              setNewConvoModal((prevModal) => (prevModal = false));
+            }
+          }}
+          className="modal-wrapper"
+        >
+          <div
+            // onClick={e=>e.stopPropagation()}
+            className="modal"
+          >
+            <ul>
+              {usersWithoutConvo.map((user) => (
+                  <button key={user.id} className="chat-button">
+                  <img
+                    className="avatar"
+                    height="50"
+                    width="50"
+                    alt=""
+                    src={user.avatar}
+                  />
+                  <div>
+                    <h3>{user.firstName} {user.lastName}</h3>
+                  </div>
+                </button>
+                
+              ))}
+            </ul>
+
+            <button
+              // @ts-ignore
+              onClick={(e) => {
+                setNewConvoModal((prevModal) => (prevModal = false));
+              }}
+              className="close-modal-btn"
+            >
+              X
+            </button>
+          </div>
+        </section>
+      )}
       {/* <!-- Side Panel --> */}
       <aside>
         {/* <!-- Side Header --> */}
@@ -77,7 +139,12 @@ const MainApp = ({ user, users, setSelectedUser }) => {
         {/* side chat */}
         <ul>
           <li>
-            <button className="chat-button">
+            <button
+              onClick={(e) => {
+                setNewConvoModal(true);
+              }}
+              className="chat-button"
+            >
               <div>
                 <h3>+ Start a new Chat</h3>
               </div>
