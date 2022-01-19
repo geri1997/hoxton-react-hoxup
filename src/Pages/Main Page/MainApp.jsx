@@ -51,13 +51,21 @@ const MainApp = ({ user, users }) => {
       setAllConvos(convos.concat(otherConvs) )
       let userArr=[]
     for(let conv of allConvos){
-        for(let user of users){
-            if(conv.userId===user.id||conv.participantId===user.id){
-                userArr=[...userArr,user]
+        for(let user1 of users){
+            if(conv.userId===user1.id&&user.id!==user1.id){
+                userArr=[...userArr,user1]
             }
         }
     }
-    console.log(userArr)
+    for(let conv of allConvos){
+        for(let user1 of users){
+            if(conv.participantId===user1.id&&user.id!==user1.id){
+                userArr=[...userArr,user1]
+            }
+        }
+    }
+    
+    setConvoUsers(userArr)
   }, [convos,otherConvs]);
 
   return (
