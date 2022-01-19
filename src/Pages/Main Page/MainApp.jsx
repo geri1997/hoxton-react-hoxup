@@ -11,11 +11,10 @@ const MainApp = ({ user, users, setSelectedUser }) => {
   const [selectedConvoMessages, setSelectedConvoMessages] = useState([]);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
-
   const params = useParams();
 
   const navigate = useNavigate();
-  
+
   //fetch conversations
   useEffect(() => {
     fetch(`http://localhost:4000/conversations?userId=${user.id}`)
@@ -52,14 +51,19 @@ const MainApp = ({ user, users, setSelectedUser }) => {
 
     setConvoUsers(userArr);
   }, [convos, otherConvs]);
- 
-  
+
   return (
     <div className="main-wrapper">
       {/* <!-- Side Panel --> */}
       <aside>
         {/* <!-- Side Header --> */}
-        <Header setSelectedUser={setSelectedUser} showSettingsModal={showSettingsModal} setShowSettingsModal = {setShowSettingsModal} user={user} />
+        <Header
+          setSelectedConvo={setSelectedConvo}
+          setSelectedUser={setSelectedUser}
+          showSettingsModal={showSettingsModal}
+          setShowSettingsModal={setShowSettingsModal}
+          user={user}
+        />
 
         {/* <!-- Search form --> */}
         <form className="aside__search-container">
@@ -165,60 +169,54 @@ const MainApp = ({ user, users, setSelectedUser }) => {
 
         {/* <!-- Message Box --> */}
         <footer>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              fetch(`http://localhost:4000/messages`, {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  conversationId: selectedConvo.id,
-                  userId: user.id,
+          {selectedConvo && (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                fetch(`http://localhost:4000/messages`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    conversationId: selectedConvo.id,
+                    userId: user.id,
+                    // @ts-ignore
+                    messageText: e.target.msg.value,
+                  }),
+                })
+                  .then((resp) => resp.json())
                   // @ts-ignore
-                  messageText: e.target.msg.value,
-                }),
-              })
-                .then((resp) => resp.json())
-                // @ts-ignore
-                .then((msg) => {
-                  setSelectedConvoMessages([
-                    ...selectedConvoMessages,
-                    {
-                      conversationId: selectedConvo.id,
-                      userId: user.id,
-                      // @ts-ignore
-                      messageText: e.target.msg.value,
-                    },
-                  ]);
-                  // @ts-ignore
-                  e.target.reset();
-                });
-            }}
-            className="panel conversation__message-box"
-          >
-            <input
-              type="text"
-              placeholder="Type a message"
-              name="msg"
-              // value=""
-            />
-            <button type="submit">
-              {/* <!-- This is the send button --> */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                width="24"
-                height="24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"
-                ></path>
-              </svg>
-            </button>
-          </form>
+                  .then((msg) => {
+                    setSelectedConvoMessages([...selectedConvoMessages, msg]);
+                    // @ts-ignore
+                    e.target.reset();
+                  });
+              }}
+              className="panel conversation__message-box"
+            >
+              <input
+                type="text"
+                placeholder="Type a message"
+                name="msg"
+                // value=""
+              />
+              <button type="submit">
+                {/* <!-- This is the send button --> */}
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width="24"
+                  height="24"
+                >
+                  <path
+                    fill="currentColor"
+                    d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z"
+                  ></path>
+                </svg>
+              </button>
+            </form>
+          )}
         </footer>
       </main>
     </div>

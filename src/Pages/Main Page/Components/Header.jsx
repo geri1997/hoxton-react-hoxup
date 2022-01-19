@@ -7,6 +7,7 @@ const Header = ({
   setSelectedUser,
   showSettingsModal,
   setShowSettingsModal,
+  setSelectedConvo
 }) => {
     const navigate = useNavigate()
   return (
@@ -29,6 +30,7 @@ const Header = ({
               onClick={(e) => {
                   navigate('/')
                 setSelectedUser(null);
+                setSelectedConvo(null)
 
               }}
             >
