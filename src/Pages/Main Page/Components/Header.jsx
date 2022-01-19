@@ -7,9 +7,9 @@ const Header = ({
   setSelectedUser,
   showSettingsModal,
   setShowSettingsModal,
-  setSelectedConvo
+  setSelectedConvo,
 }) => {
-    const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       {showSettingsModal && (
@@ -27,14 +27,25 @@ const Header = ({
             className="modal"
           >
             <h2
+              style={{ cursor: "pointer" }}
               onClick={(e) => {
-                  navigate('/')
+                navigate("/");
                 setSelectedUser(null);
-                setSelectedConvo(null)
-
+                setSelectedConvo(null);
               }}
             >
               Log Out
+            </h2>
+            <h2
+              style={{ cursor: "pointer" }}
+              onClick={(e) => {
+                navigate("/");
+                setSelectedUser(null);
+                setSelectedConvo(null);
+                fetch("http://localhost:4000/users/"+user.id, { method: "DELETE" });
+              }}
+            >
+              Delete Account
             </h2>
 
             <button

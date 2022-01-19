@@ -1,11 +1,15 @@
-import React, {useState } from "react";
+import React, {useEffect, useState } from "react";
 import Modal from "./Components/Modal";
 import UserList from "./Components/UserList";
 
 const Login = ({setUsers, users, setSelectedUser}) => {
   const [isModalShown, setIsModalShown] = useState(false)
 
-
+  useEffect(() => {
+    fetch("http://localhost:4000/users?_embed=conversations")
+      .then((resp) => resp.json())
+      .then((serverUsers) => setUsers(serverUsers));
+  }, []);
   
 
   return (
