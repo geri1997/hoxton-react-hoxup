@@ -1,44 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, {useState } from "react";
+import Modal from "./Components/Modal";
+import UserList from "./Components/UserList";
 
-const Login = () => {
-  const [users, setUsers] = useState([]);
+const Login = ({setUsers, users, setSelectedUser}) => {
+  const [isModalShown, setIsModalShown] = useState(false)
 
-  useEffect(() => {
-    fetch("http://localhost:4000/users")
-      .then((resp) => resp.json())
-      .then((serverUsers) => (setUsers(serverUsers)));
-  }, [users]);
+
+  
 
   return (
+      <>{isModalShown&& <Modal setUsers={setUsers} setIsModalShown={setIsModalShown}/>}
     <div className="main-wrapper login">
       <section className="login-section">
         <h2>Choose your user!</h2>
-        <ul>
-          {users.map((user) => {
-            return (
-              <li>
-                <button className="user-selection">
-                  <img
-                    className="avatar"
-                    width="50"
-                    height="50"
-                    src={`https://robohash.org/${user.firstName}`}
-                    alt=""
-                  />
-                  <h3>{user.firstName + ' ' + user.lastName}</h3>
-                </button>
-              </li>
-            );
-          })}
-
-          <li>
-            <button className="user-selection">
-              <h3>+ Add a new user</h3>
-            </button>
-          </li>
-        </ul>
+        <UserList setIsModalShown={setIsModalShown} setSelectedUser={setSelectedUser} users={users}/>
       </section>
     </div>
+    </>
   );
 };
 
