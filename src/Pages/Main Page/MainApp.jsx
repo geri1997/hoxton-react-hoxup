@@ -5,9 +5,9 @@ const MainApp = ({ user, users }) => {
   const [convos, setConvos] = useState([]);
   const [otherConvs, setOtherConvs] = useState([]);
   const [convoUsers, setConvoUsers] = useState([]);
-  const [allConvos, setAllConvos] = useState([])
-
-  
+  const [allConvos, setAllConvos] = useState([]);
+  const [selectedConvo, setSelectedConvo] = useState(null);
+  const [selectedConvoMessages, setSelectedConvoMessages] = useState([]);
 
   //fetch conversations
   useEffect(() => {
@@ -25,48 +25,26 @@ const MainApp = ({ user, users }) => {
       });
   }, []);
 
-
-
-  
-
-//   useEffect(() => {
-//     for (const convo of otherConvs) {
-//       if (user.id === convo.userId) {
-//         fetch(`http://localhost:4000/users/${convo.participantId}`)
-//           .then((resp) => resp.json())
-//           .then((user1) => {
-//             setConvoUsers([...convoUsers, user1]);
-//           });
-//       } else if (user.id === convo.participantId) {
-//         fetch(`http://localhost:4000/users/${convo.userId}`)
-//           .then((resp) => resp.json())
-//           .then((user1) => {
-//             setConvoUsers([...convoUsers, user1]);
-//           });
-//       }
-//     }
-//   }, [otherConvs]);
   useEffect(() => {
-      
-      setAllConvos(convos.concat(otherConvs) )
-      let userArr=[]
-    for(let conv of allConvos){
-        for(let user1 of users){
-            if(conv.userId===user1.id&&user.id!==user1.id){
-                userArr=[...userArr,user1]
-            }
+    setAllConvos(convos.concat(otherConvs));
+    let userArr = [];
+    for (let conv of allConvos) {
+      for (let user1 of users) {
+        if (conv.userId === user1.id && user.id !== user1.id) {
+          userArr = [...userArr, user1];
         }
+      }
     }
-    for(let conv of allConvos){
-        for(let user1 of users){
-            if(conv.participantId===user1.id&&user.id!==user1.id){
-                userArr=[...userArr,user1]
-            }
+    for (let conv of allConvos) {
+      for (let user1 of users) {
+        if (conv.participantId === user1.id && user.id !== user1.id) {
+          userArr = [...userArr, user1];
         }
+      }
     }
-    
-    setConvoUsers(userArr)
-  }, [convos,otherConvs]);
+
+    setConvoUsers(userArr);
+  }, [convos, otherConvs]);
 
   return (
     <div className="main-wrapper">
@@ -93,10 +71,28 @@ const MainApp = ({ user, users }) => {
               </div>
             </button>
           </li>
-          {convoUsers.map((user) => {
+          {convoUsers.map((user, i) => {
             return (
               <li key={user.id}>
-                <button className="chat-button">
+                <button
+                  onClick={(e) => {
+                    let singleConvo = allConvos.find(
+                      (convo) =>
+                        convo.participantId === user.id ||
+                        convo.userId === user.id
+                    );
+
+                    fetch(
+                      `http://localhost:4000/messages?conversationId=${singleConvo.id}`
+                    )
+                      .then((resp) => resp.json())
+                      .then((messages) => {
+                        console.log(messages);
+                        setSelectedConvoMessages(messages);
+                      });
+                  }}
+                  className="chat-button"
+                >
                   <img
                     className="avatar"
                     height="50"
@@ -126,66 +122,25 @@ const MainApp = ({ user, users }) => {
      --> */}
 
         <ul className="conversation__messages">
-          <li className="outgoing">
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus
-              excepturi non odit quisquam et assumenda suscipit maxime officiis
-              repellat possimus! Soluta illum rerum eligendi labore ut nemo quod
-              voluptates ad.
-            </p>
-          </li>
+          {selectedConvoMessages.map((message) => {
+            if ((message.userId === user.id)) {
+              return (
+                <li className="outgoing">
+                  <p>{message.messageText}</p>
+                </li>
+              );
+            } else {
+              return (
+                <li>
+                  <p>{message.messageText}</p>
+                </li>
+              );
+            }
+          })}
 
           {/* <!-- Outgoing messages are messages sent by the current logged in user --> */}
-          <li className="outgoing">
-            <p>Lorem ipsum...</p>
-          </li>
 
           {/* <!-- This one doesnt belong to the current logged in user --> */}
-          <li>
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus
-              excepturi non odit quisquam et assumenda suscipit maxime officiis
-              repellat possimus!
-            </p>
-          </li>
-
-          <li className="outgoing">
-            <p>Some test message</p>
-          </li>
-          <li className="outgoing">
-            <p>more messagesss!!!</p>
-          </li>
-          <li className="outgoing">
-            <p>more messagesss!!!</p>
-          </li>
-          <li className="outgoing">
-            <p>
-              Lorem ipsum dolor sit amet consectetur, adipisicing elit. Natus
-              excepturi non odit quisquam et assumenda suscipit maxime officiis
-              repellat possimus! Soluta illum rerum eligendi labore ut nemo quod
-              voluptates ad.Lorem ipsum dolor sit amet consectetur, adipisicing
-              elit. Natus excepturi non odit quisquam et assumenda suscipit
-              maxime officiis repellat possimus! Soluta illum rerum eligendi
-              labore ut nemo quod voluptates ad.Lorem ipsum dolor sit amet
-              consectetur, adipisicing elit. Natus excepturi non odit quisquam
-              et assumenda suscipit maxime officiis repellat possimus! Soluta
-              illum rerum eligendi labore ut nemo quod voluptates ad.Lorem ipsum
-              dolor sit amet consectetur, adipisicing elit. Natus excepturi non
-              odit quisquam et assumenda suscipit maxime officiis repellat
-              possimus! Soluta illum rerum eligendi labore ut nemo quod
-              voluptates ad.Lorem ipsum dolor sit amet consectetur, adipisicing
-              elit. Natus excepturi non odit quisquam et assumenda suscipit
-              maxime officiis repellat possimus! Soluta illum rerum eligendi
-              labore ut nemo quod voluptates ad.Lorem ipsum dolor sit amet
-              consectetur, adipisicing elit. Natus excepturi non odit quisquam
-              et assumenda suscipit maxime officiis repellat possimus! Soluta
-              illum rerum eligendi labore ut nemo quod voluptates ad.Lorem ipsum
-              dolor sit amet consectetur, adipisicing elit. Natus excepturi non
-              odit quisquam et assumenda suscipit maxime officiis repellat
-              possimus! Soluta illum rerum eligendi labore ut nemo quod
-              voluptates ad.
-            </p>
-          </li>
         </ul>
 
         <ul className="conversation__messages"></ul>
