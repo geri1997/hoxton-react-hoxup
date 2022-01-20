@@ -38,164 +38,44 @@
   ],
   "messages": [
     {
+      "conversationId": 3,
       "userId": 4,
-      "messageText": "Hello! 👋 ",
-      "conversationId": 6,
+      "messageText": "dfgdfg",
       "id": 1
     },
     {
-      "userId": 4,
-      "messageText": "Hello! 👋 ",
-      "conversationId": 6,
+      "conversationId": 4,
+      "userId": 1,
+      "messageText": "dfgsdgsergdfg",
       "id": 2
     },
     {
-      "userId": 5,
-      "messageText": "Hello! 👋 ",
-      "conversationId": 6,
+      "conversationId": 4,
+      "userId": 1,
+      "messageText": "sffdgdfg",
       "id": 3
     },
     {
-      "userId": 5,
-      "messageText": "Hello! 👋 ",
-      "conversationId": 6,
+      "conversationId": 5,
+      "userId": 1,
+      "messageText": "dfvvvvvvvvvvvvvvv",
       "id": 4
     },
     {
-      "conversationId": 6,
-      "userId": 4,
-      "messageText": "asd",
-      "id": 5
-    },
-    {
-      "conversationId": 6,
-      "userId": 4,
-      "messageText": "dasd",
-      "id": 6
-    },
-    {
-      "conversationId": 6,
-      "userId": 4,
-      "messageText": "dasdasd",
-      "id": 7
-    },
-    {
-      "conversationId": 6,
-      "userId": 5,
-      "messageText": "sdfsd",
-      "id": 8
-    },
-    {
-      "conversationId": 6,
-      "userId": 5,
-      "messageText": "sdfsdfs",
-      "id": 9
-    },
-    {
-      "conversationId": 6,
-      "userId": 4,
-      "messageText": "gfdg",
-      "id": 10
-    },
-    {
-      "conversationId": 6,
-      "userId": 4,
-      "messageText": "sdfsdf",
-      "id": 11
-    },
-    {
-      "conversationId": 6,
-      "userId": 4,
-      "messageText": "asdweqw",
-      "id": 12
-    },
-    {
-      "conversationId": 6,
-      "userId": 4,
-      "messageText": "asdasd",
-      "id": 13
-    },
-    {
-      "conversationId": 6,
-      "userId": 4,
-      "messageText": "tert",
-      "id": 14
-    },
-    {
-      "conversationId": 6,
-      "userId": 5,
-      "messageText": "gfdgd",
-      "id": 15
-    },
-    {
-      "conversationId": 3,
-      "userId": 2,
-      "messageText": "test ",
-      "id": 16
-    },
-    {
       "conversationId": 2,
-      "userId": 2,
-      "messageText": "test2",
-      "id": 17
-    },
-    {
-      "conversationId": 1,
       "userId": 3,
-      "messageText": "sdfsdf",
-      "id": 18
-    },
-    {
-      "conversationId": 5,
-      "userId": 4,
-      "messageText": "nico-ed test",
-      "id": 19
-    },
-    {
-      "conversationId": 4,
-      "userId": 4,
-      "messageText": "nico-luca test",
-      "id": 20
-    },
-    {
-      "conversationId": 4,
-      "userId": 4,
-      "messageText": "asdasd",
-      "id": 21
-    },
-    {
-      "conversationId": 5,
-      "userId": 4,
-      "messageText": "dfg",
-      "id": 22
-    },
-    {
-      "conversationId": 6,
-      "userId": 5,
-      "messageText": "sdfsdf",
-      "id": 23
-    },
-    {
-      "conversationId": 5,
-      "userId": 4,
-      "messageText": "fdgdfg",
-      "id": 24
-    },
-    {
-      "conversationId": 5,
-      "userId": 4,
-      "messageText": "fe",
-      "id": 25
+      "messageText": "dfgdgdfg",
+      "id": 5
     }
   ],
   "conversations": [
     {
-      "userId": 3,
-      "participantId": 1,
+      "userId": 5,
+      "participantId": 2,
       "id": 1
     },
     {
-      "userId": 2,
+      "userId": 5,
       "participantId": 3,
       "id": 2
     },
@@ -205,18 +85,18 @@
       "id": 3
     },
     {
-      "userId": 4,
-      "participantId": 3,
+      "userId": 1,
+      "participantId": 5,
       "id": 4
     },
     {
-      "userId": 4,
-      "participantId": 1,
+      "userId": 1,
+      "participantId": 3,
       "id": 5
     },
     {
-      "userId": 4,
-      "participantId": 5,
+      "userId": 3,
+      "participantId": 2,
       "id": 6
     }
   ]

@@ -156,9 +156,9 @@ textarea:focus {
   border-bottom: 1px solid var(--borders);
 }
 
-.chat-button:hover {
+/* .chat-button:hover {
   background-color: var(--panels-hover);
-}
+} */
 
 .chat-button div {
   display: inline-block;
@@ -230,4 +230,8 @@ textarea:focus {
   .main-wrapper {
     height: 95vh;
   }
+}
+
+.selected{
+  background-color: #009688;
 }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import Conversations from "./Components/Conversations";
 import Header from "./Components/Header";
 
 const MainApp = ({ user, users, setSelectedUser }) => {
@@ -18,43 +19,55 @@ const MainApp = ({ user, users, setSelectedUser }) => {
   const navigate = useNavigate();
 
   //fetch conversations
+
   useEffect(() => {
+    if(user===null){
+        navigate('/login')
+    }},[])
+
+  useEffect(() => {
+    if(user!==null)
     fetch(`http://localhost:4000/conversations?userId=${user.id}`)
       .then((resp) => resp.json())
       .then((serverConvos) => {
         setConvos(serverConvos);
       });
   }, []);
-  useEffect(() => {
-    fetch(`http://localhost:4000/conversations?participantId=${user.id}`)
-      .then((resp) => resp.json())
-      .then((serverConvos) => {
-        setOtherConvs(serverConvos);
-      });
-  }, []);
+  // useEffect(() => {
+  //   fetch(`http://localhost:4000/conversations?participantId=${user.id}`)
+  //     .then((resp) => resp.json())
+  //     .then((serverConvos) => {
+  //       setOtherConvs(serverConvos);
+  //     });
+  // }, []);
 
   useEffect(() => {
-    setAllConvos(convos.concat(otherConvs));
+    setAllConvos(convos);
     let userArr = [];
-    for (let conv of allConvos) {
+    console.log(convos)
+    for (let conv of convos) {
       for (let user1 of users) {
         if (conv.userId === user1.id && user.id !== user1.id) {
-          userArr = [...userArr, user1];
+          userArr = [
+            ...new Set([...userArr, user1]),
+          ]
         }
       }
     }
-    for (let conv of allConvos) {
+    for (let conv of convos) {
       for (let user1 of users) {
         if (conv.participantId === user1.id && user.id !== user1.id) {
-          userArr = [...userArr, user1];
+          userArr = [
+            ...new Set([...userArr, user1]),
+          ];
         }
       }
     }
-
+    console.log(userArr)
     setConvoUsers((prevUsers) => {
       setUsersWithoutConvo(
         users.filter((us) => {
-            if(us.id===user.id)return false
+          if (us.id === user.id) return false;
           if (
             userArr.find((conUs) => {
               return conUs.id === us.id;
@@ -70,6 +83,7 @@ const MainApp = ({ user, users, setSelectedUser }) => {
     });
   }, [convos, otherConvs]);
 
+  if(user!==null)
   return (
     <div className="main-wrapper">
       {newConvoModal && (
@@ -87,20 +101,40 @@ const MainApp = ({ user, users, setSelectedUser }) => {
             className="modal"
           >
             <ul>
-              {usersWithoutConvo.map((user) => (
-                  <button key={user.id} className="chat-button">
+              {usersWithoutConvo.map((user1) => (
+                <button
+                  onClick={(e) => {
+                    let newConvos = JSON.parse(JSON.stringify(convos));
+                    fetch("http://localhost:4000/conversations/", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        userId: user.id,
+                        participantId: user1.id,
+                      }),
+                    }).then(resp=>resp.json()).then(convo=>{newConvos.push(convo)
+                     setConvos(newConvos) 
+                    })
+                    setNewConvoModal(false)
+                  }}
+                  key={user1.id}
+                  className="chat-button"
+                >
                   <img
                     className="avatar"
                     height="50"
                     width="50"
                     alt=""
-                    src={user.avatar}
+                    src={user1.avatar}
                   />
                   <div>
-                    <h3>{user.firstName} {user.lastName}</h3>
+                    <h3>
+                      {user1.firstName} {user1.lastName}
+                    </h3>
                   </div>
                 </button>
-                
               ))}
             </ul>
 
@@ -157,41 +191,7 @@ const MainApp = ({ user, users, setSelectedUser }) => {
               i
             ) => {
               return (
-                <li key={user.id}>
-                  <button
-                    // @ts-ignore
-                    onClick={(e) => {
-                      let singleConvo = allConvos.find(
-                        (convo) =>
-                          convo.participantId === user.id ||
-                          convo.userId === user.id
-                      );
-                      setSelectedConvo(singleConvo);
-                      navigate(`/logged-in/${singleConvo.id}`);
-                      fetch(
-                        `http://localhost:4000/messages?conversationId=${singleConvo.id}`
-                      )
-                        .then((resp) => resp.json())
-                        .then((messages) => {
-                          console.log(messages);
-                          setSelectedConvoMessages(messages);
-                        });
-                    }}
-                    className="chat-button"
-                  >
-                    <img
-                      className="avatar"
-                      height="50"
-                      width="50"
-                      alt=""
-                      src={user.avatar}
-                    />
-                    <div>
-                      <h3>{user.firstName}</h3>
-                      <p>Last message</p>
-                    </div>
-                  </button>
-                </li>
+                <Conversations key={user.id} user={user} setSelectedConvoMessages={setSelectedConvoMessages} convos={convos} navigate={navigate} setSelectedConvo={setSelectedConvo} selectedConvoMessages={selectedConvoMessages}/>
               );
             }
           )}
@@ -288,6 +288,9 @@ const MainApp = ({ user, users, setSelectedUser }) => {
       </main>
     </div>
   );
+
+
+  return <h1>testttttttttttttttttttt</h1>
 };
 
 export default MainApp;
